@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FoodEntryView: View {
 
+    var onSave: (Food) -> Void
+    
     @State var foodVM = FoodViewModel()
 
     var body: some View {
@@ -40,17 +42,12 @@ struct FoodEntryView: View {
             }
 
             Section {
-                Button("Add") {
-                    // Add food here
+                Button("Save") {
+                    let food = foodVM.createFood()
+                    onSave(food)
                 }
             }
         }
         .navigationTitle("Add Food")
-    }
-}
-
-#Preview {
-    NavigationStack {
-        FoodEntryView()
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 struct DietTrackerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DailyFoodView()
         }
     }
 }
