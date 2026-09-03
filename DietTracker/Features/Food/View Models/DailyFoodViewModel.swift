@@ -14,4 +14,10 @@ class DailyFoodViewModel {
     func addFoodToList(_ food: Food) {
         foodList.append(food)
     }
+    
+    func updateFood(_ updatedFood: Food) {
+        if let index = foodList.firstIndex(where: { $0.id == updatedFood.id }) {
+            foodList[index] = updatedFood
+        }
+    }
 }
