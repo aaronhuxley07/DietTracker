@@ -8,32 +8,41 @@
 import SwiftUI
 
 struct FoodEntryView: View {
-    @State private var name = ""
-    @State private var calories = ""
-    @State private var protein = ""
-    @State private var carbohydrates = ""
-    @State private var fat = ""
-    @State private var date = Date()
+
+    @State var foodVM = FoodViewModel()
 
     var body: some View {
         Form {
             Section("Food") {
-                TextField("Name", text: $name)
-                TextField("Calories", text: $calories)
+                TextField("Name", text: $foodVM.name)
+
+                TextField("Calories", text: $foodVM.calories)
                     .keyboardType(.decimalPad)
             }
 
             Section("Macros") {
-                TextField("Protein (g)", text: $protein)
+                TextField("Protein (g)", text: $foodVM.protein)
                     .keyboardType(.decimalPad)
-                TextField("Carbohydrates (g)", text: $carbohydrates)
+
+                TextField("Carbohydrates (g)", text: $foodVM.carbohydrates)
                     .keyboardType(.decimalPad)
-                TextField("Fat (g)", text: $fat)
+
+                TextField("Fat (g)", text: $foodVM.fat)
                     .keyboardType(.decimalPad)
             }
 
             Section("Date") {
-                DatePicker("Date", selection: $date, displayedComponents: .date)
+                DatePicker(
+                    "Date",
+                    selection: $foodVM.date,
+                    displayedComponents: .date
+                )
+            }
+
+            Section {
+                Button("Add") {
+                    // Add food here
+                }
             }
         }
         .navigationTitle("Add Food")
