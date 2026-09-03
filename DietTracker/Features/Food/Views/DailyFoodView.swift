@@ -34,16 +34,27 @@ struct DailyFoodView: View {
             .navigationTitle("Food List")
             .popover(isPresented: $showPopup) {
                 if let selectedFood {
-                    FoodEntryView(existingFood: selectedFood) { updatedFood in
-                        dailyFoodVM.updateFood(updatedFood)
-                        showPopup = false
-                        self.selectedFood = nil
-                    }
+                    FoodEntryView(
+                        existingFood: selectedFood,
+                        onSave: { updatedFood in
+                            dailyFoodVM.updateFood(updatedFood)
+                            showPopup = false
+                            self.selectedFood = nil
+                        },
+                        onDelete: { food in
+                            dailyFoodVM.deleteFood(food)
+                            showPopup = false
+                            self.selectedFood = nil
+                        }
+                    )
                 } else {
-                    FoodEntryView { food in
-                        dailyFoodVM.addFoodToList(food)
-                        showPopup = false
-                    }
+                    FoodEntryView(
+                        onSave: { food in
+                            dailyFoodVM.addFoodToList(food)
+                            showPopup = false
+                        },
+                        onDelete: { _ in }
+                    )
                 }
             }
         }

@@ -10,15 +10,20 @@ import SwiftUI
 struct FoodEntryView: View {
 
     let existingFood: Food?
+    
     var onSave: (Food) -> Void
+    var onDelete: (Food) -> Void
+    
     @State private var foodVM: FoodViewModel
 
     init(
         existingFood: Food? = nil,
-        onSave: @escaping (Food) -> Void
+        onSave: @escaping (Food) -> Void,
+        onDelete: @escaping (Food) -> Void
     ) {
         self.existingFood = existingFood
         self.onSave = onSave
+        self.onDelete = onDelete
         _foodVM = State(initialValue: FoodViewModel(existingFood: existingFood))
     }
 
@@ -32,6 +37,10 @@ struct FoodEntryView: View {
                     Button("Save Changes") {
                         let updatedFood = foodVM.editFood(existingFood)
                         onSave(updatedFood)
+                    }
+
+                    Button("Delete Food", role: .destructive) {
+                        onDelete(existingFood)
                     }
                 } else {
                     Button("Save") {

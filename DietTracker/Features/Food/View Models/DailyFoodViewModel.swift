@@ -20,4 +20,8 @@ class DailyFoodViewModel {
             foodList[index] = updatedFood
         }
     }
+    
+    func deleteFood(_ food: Food) {
+        foodList.removeAll { $0.id == food.id }
+    }
 }
