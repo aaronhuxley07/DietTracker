@@ -9,22 +9,25 @@ import SwiftUI
 
 struct FoodEntryView: View {
 
-    let existingFood: Food?
+    let food: Food
+    var existingFoodEntry: FoodEntry?
     
-    var onSave: (Food) -> Void
-    var onDelete: (Food) -> Void
+    var onSave: (FoodEntry) -> Void
+    var onDelete: (FoodEntry) -> Void
     
-    @State private var foodVM: FoodViewModel
+    @State private var foodEntryVM: FoodEntryViewModel
 
     init(
-        existingFood: Food? = nil,
-        onSave: @escaping (Food) -> Void,
-        onDelete: @escaping (Food) -> Void
+        food: Food,
+        existingFoodEntry: FoodEntry? = nil,
+        onSave: @escaping (FoodEntry) -> Void,
+        onDelete: @escaping (FoodEntry) -> Void
     ) {
-        self.existingFood = existingFood
+        self.food = food
+        self.existingFoodEntry = existingFoodEntry
         self.onSave = onSave
         self.onDelete = onDelete
-        _foodVM = State(initialValue: FoodViewModel(existingFood: existingFood))
+        _foodEntryVM = State(initialValue: FoodEntryViewModel(food: food, existingFoodEntry: existingFoodEntry))
     }
 
     var body: some View {
@@ -32,55 +35,69 @@ struct FoodEntryView: View {
 
             foodInformation
 
+            Section("Date") {
+                DatePicker(
+                    "Date",
+                    selection: $foodEntryVM.date,
+                    displayedComponents: .date
+                )
+            }
+            
+            Section("Amount"){
+                TextField("", value: $foodEntryVM.amount, format: .number)
+                    .keyboardType(.decimalPad)
+            }
+            
             Section {
-                if let existingFood {
+                if let existingFoodEntry {
                     Button("Save Changes") {
-                        let updatedFood = foodVM.editFood(existingFood)
-                        onSave(updatedFood)
+                        let updatedFoodEntry = foodEntryVM.editFoodEntry(existingFoodEntry)
+                        onSave(updatedFoodEntry)
                     }
 
                     Button("Delete Food", role: .destructive) {
-                        onDelete(existingFood)
+                        onDelete(existingFoodEntry)
                     }
                 } else {
                     Button("Save") {
-                        let food = foodVM.createFood()
-                        onSave(food)
+                        let foodEntry = foodEntryVM.createFoodEntry()
+                        onSave(foodEntry)
                     }
                 }
             }
         }
-        .navigationTitle(existingFood == nil ? "Add Food" : "Edit Food")
+        .navigationTitle(existingFoodEntry == nil ? "Add Food Entry" : "Edit Food Entry")
     }
 }
 
 extension FoodEntryView {
     @ViewBuilder
     var foodInformation: some View {
-        Section("Food") {
-            TextField("Name", text: $foodVM.name)
-
-            TextField("Calories", text: $foodVM.calories)
-                .keyboardType(.decimalPad)
+        Section("Name"){
+            Text(food.name)
         }
-
-        Section("Macros") {
-            TextField("Protein (g)", text: $foodVM.protein)
-                .keyboardType(.decimalPad)
-
-            TextField("Carbohydrates (g)", text: $foodVM.carbohydrates)
-                .keyboardType(.decimalPad)
-
-            TextField("Fat (g)", text: $foodVM.fat)
-                .keyboardType(.decimalPad)
+        
+        if let brand = food.brand {
+            Section("Brand"){
+                Text(brand)
+            }
         }
-
-        Section("Date") {
-            DatePicker(
-                "Date",
-                selection: $foodVM.date,
-                displayedComponents: .date
-            )
+        
+        Section("Calories"){
+            Text(String(food.calories))
+        }
+        
+        Section("Protein (g)"){
+            Text(String(food.protein))
+        }
+        
+        Section("Carbohydrates (g)"){
+            Text(String(food.carbohydrates))
+        }
+        
+        Section("Fat (g)"){
+            Text(String(food.fat))
         }
     }
 }
+
