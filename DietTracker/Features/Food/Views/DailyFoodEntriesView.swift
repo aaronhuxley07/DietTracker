@@ -29,6 +29,11 @@ struct DailyFoodEntriesView: View {
                             }
                         }
                     }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            dailyFoodEntriesVM.deleteFoodEntry(dailyFoodEntriesVM.foodEntries[index])
+                        }
+                    }
                 }
 
                 Button("Add New Food Entry") {

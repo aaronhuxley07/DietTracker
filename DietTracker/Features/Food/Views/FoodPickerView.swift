@@ -13,6 +13,8 @@ struct FoodPickerView: View {
     var onSave: (FoodEntry) -> Void
     @Environment(\.dismiss) private var dismiss
     
+    @State private var showEditor = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -25,9 +27,31 @@ struct FoodPickerView: View {
                             } onDelete: { _ in }
                         }
                     }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            foodLibraryVM.deleteFood(foodLibraryVM.foods[index])
+                        }
+                    }
                 }
             }
             .navigationTitle("Food Library")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showEditor = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showEditor) {
+                FoodEditorView(
+                    onSave: { food in
+                        foodLibraryVM.addFood(food)
+                        showEditor = false
+                    }
+                )
+            }
         }
     }
 }
