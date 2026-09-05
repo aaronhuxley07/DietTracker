@@ -10,11 +10,11 @@ import SwiftUI
 struct FoodEntryView: View {
 
     let food: Food
-    var existingFoodEntry: FoodEntry?
-    
+    let existingFoodEntry: FoodEntry?
+
     var onSave: (FoodEntry) -> Void
     var onDelete: (FoodEntry) -> Void
-    
+
     @State private var foodEntryVM: FoodEntryViewModel
 
     init(
@@ -27,12 +27,17 @@ struct FoodEntryView: View {
         self.existingFoodEntry = existingFoodEntry
         self.onSave = onSave
         self.onDelete = onDelete
-        _foodEntryVM = State(initialValue: FoodEntryViewModel(food: food, existingFoodEntry: existingFoodEntry))
+
+        _foodEntryVM = State(
+            initialValue: FoodEntryViewModel(
+                food: food,
+                existingFoodEntry: existingFoodEntry
+            )
+        )
     }
 
     var body: some View {
         Form {
-
             foodInformation
 
             Section("Date") {
@@ -42,20 +47,26 @@ struct FoodEntryView: View {
                     displayedComponents: .date
                 )
             }
-            
-            Section("Amount"){
-                TextField("", value: $foodEntryVM.amount, format: .number)
-                    .keyboardType(.decimalPad)
+
+            Section("Amount") {
+                TextField(
+                    "",
+                    value: $foodEntryVM.amount,
+                    format: .number
+                )
+                .keyboardType(.decimalPad)
             }
-            
+
             Section {
                 if let existingFoodEntry {
                     Button("Save Changes") {
-                        let updatedFoodEntry = foodEntryVM.editFoodEntry(existingFoodEntry)
+                        let updatedFoodEntry =
+                            foodEntryVM.editFoodEntry(existingFoodEntry)
+
                         onSave(updatedFoodEntry)
                     }
 
-                    Button("Delete Food", role: .destructive) {
+                    Button("Delete Food Entry", role: .destructive) {
                         onDelete(existingFoodEntry)
                     }
                 } else {
@@ -66,38 +77,41 @@ struct FoodEntryView: View {
                 }
             }
         }
-        .navigationTitle(existingFoodEntry == nil ? "Add Food Entry" : "Edit Food Entry")
+        .navigationTitle(
+            existingFoodEntry == nil
+                ? "Add Food Entry"
+                : "Edit Food Entry"
+        )
     }
 }
 
 extension FoodEntryView {
     @ViewBuilder
     var foodInformation: some View {
-        Section("Name"){
+        Section("Name") {
             Text(food.name)
         }
-        
+
         if let brand = food.brand {
-            Section("Brand"){
+            Section("Brand") {
                 Text(brand)
             }
         }
-        
-        Section("Calories"){
+
+        Section("Calories") {
             Text(String(food.calories))
         }
-        
-        Section("Protein (g)"){
+
+        Section("Protein (g)") {
             Text(String(food.protein))
         }
-        
-        Section("Carbohydrates (g)"){
+
+        Section("Carbohydrates (g)") {
             Text(String(food.carbohydrates))
         }
-        
-        Section("Fat (g)"){
+
+        Section("Fat (g)") {
             Text(String(food.fat))
         }
     }
 }
-

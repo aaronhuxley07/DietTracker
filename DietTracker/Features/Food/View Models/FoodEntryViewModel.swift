@@ -10,22 +10,23 @@ import Observation
 
 @Observable
 class FoodEntryViewModel {
-
+    
     let food: Food
     var amount: Double
     var date: Date
-
+    
     init(food: Food, existingFoodEntry: FoodEntry? = nil) {
         self.food = food
+        
         if let entry = existingFoodEntry {
-            self.amount = entry.amount
-            self.date = entry.date
+            amount = entry.amount
+            date = entry.date
         } else {
-            self.amount = 0
-            self.date = Date()
+            amount = 0
+            date = Date()
         }
     }
-
+    
     func createFoodEntry() -> FoodEntry {
         FoodEntry(
             foodID: food.id,

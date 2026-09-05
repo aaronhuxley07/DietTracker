@@ -1,5 +1,5 @@
 //
-//  FoodSelectionLibraryView.swift
+//  FoodPickerView.swift
 //  DietTracker
 //
 //  Created by Aaron Huxley on 03/09/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FoodSelectionLibraryView: View {
+struct FoodPickerView: View {
     @State var foodLibraryVM: FoodLibraryViewModel
     
     var onSave: (FoodEntry) -> Void

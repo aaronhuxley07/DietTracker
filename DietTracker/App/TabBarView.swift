@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct TabBarView: View {
+    
+    @State var foodLibraryVM = FoodLibraryViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TabView {
+            Tab("Entries", systemImage: "house") {
+                DailyFoodEntriesView(foodLibraryVM: foodLibraryVM)
+            }
+            
+            Tab("Library", systemImage: "fork.knife") {
+                FoodLibraryView(foodLibraryVM: foodLibraryVM)
+            }
+        }
     }
 }
 
