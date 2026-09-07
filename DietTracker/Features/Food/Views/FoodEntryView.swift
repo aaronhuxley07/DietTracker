@@ -56,6 +56,19 @@ struct FoodEntryView: View {
                 )
                 .keyboardType(.decimalPad)
             }
+            
+            Section("Meal") {
+                Picker("Meal", selection: $foodEntryVM.mealType) {
+                    Text("Select a Meal")
+                        .tag(nil as MealType?)
+
+                    ForEach(MealType.allCases) { mealType in
+                        Text(mealType.rawValue.capitalized)
+                            .tag(mealType as MealType?)
+                    }
+                }
+            }
+
 
             Section {
                 if let existingFoodEntry {

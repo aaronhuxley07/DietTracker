@@ -11,9 +11,9 @@ import Foundation
 class DailyFoodEntriesViewModel {
     var foodEntries: [FoodEntry] = []
     
-    func foodEntries(for date: Date) -> [FoodEntry] {
+    func foodEntries(for date: Date, mealType: MealType) -> [FoodEntry] {
         foodEntries.filter {
-            Calendar.current.isDate($0.date, inSameDayAs: date)
+            Calendar.current.isDate($0.date, inSameDayAs: date) && $0.mealType == mealType
         }
     }
     

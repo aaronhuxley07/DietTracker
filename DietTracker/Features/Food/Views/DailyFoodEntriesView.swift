@@ -19,23 +19,29 @@ struct DailyFoodEntriesView: View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(dailyFoodEntriesVM.foodEntries(for: Date())) { foodEntry in
-                        if let food = foodLibraryVM.foods.first(
-                            where: { $0.id == foodEntry.foodID }
-                        ) {
-                            Button(food.name) {
-                                selectedFoodEntry = foodEntry
-                                showPopup = true
+                    ForEach(MealType.allCases, id: \.self) { mealType in
+                        Section(mealType.rawValue.capitalized) {
+
+                            let entries = dailyFoodEntriesVM.foodEntries(for: Date(), mealType: mealType)
+                            ForEach(entries, id: \.id) { foodEntry in
+                                if let food = foodLibraryVM.foods.first(
+                                    where: { $0.id == foodEntry.foodID }
+                                ) {
+                                    Button(food.name) {
+                                        selectedFoodEntry = foodEntry
+                                        showPopup = true
+                                    }
+                                }
+                            }
+                            .onDelete { indexSet in
+                                let entriesToDelete = indexSet.map { entries[$0] }
+                                for entry in entriesToDelete {
+                                    dailyFoodEntriesVM.deleteFoodEntry(entry)
+                                }
                             }
                         }
                     }
-                    .onDelete { indexSet in
-                        for index in indexSet {
-                            dailyFoodEntriesVM.deleteFoodEntry(dailyFoodEntriesVM.foodEntries[index])
-                        }
-                    }
                 }
-
                 Button("Add New Food Entry") {
                     selectedFoodEntry = nil
                     showPopup = true
@@ -77,3 +83,4 @@ struct DailyFoodEntriesView: View {
         selectedFoodEntry = nil
     }
 }
+

@@ -14,6 +14,7 @@ class FoodEntryViewModel {
     let food: Food
     var amount: Double
     var date: Date
+    var mealType: MealType?
     
     init(food: Food, existingFoodEntry: FoodEntry? = nil) {
         self.food = food
@@ -21,9 +22,11 @@ class FoodEntryViewModel {
         if let entry = existingFoodEntry {
             amount = entry.amount
             date = entry.date
+            mealType = entry.mealType
         } else {
             amount = 0
             date = Date()
+            mealType = nil
         }
     }
     
@@ -31,7 +34,8 @@ class FoodEntryViewModel {
         FoodEntry(
             foodID: food.id,
             amount: amount,
-            date: date
+            date: date,
+            mealType: mealType ?? .breakfast
         )
     }
     
@@ -40,7 +44,8 @@ class FoodEntryViewModel {
             id: foodEntry.id,
             foodID: foodEntry.foodID,
             amount: amount,
-            date: date
+            date: date,
+            mealType: mealType ?? .breakfast
         )
     }
 }
