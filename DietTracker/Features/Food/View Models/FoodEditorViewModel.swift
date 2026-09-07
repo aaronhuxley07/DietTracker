@@ -13,6 +13,7 @@ class FoodEditorViewModel {
     
     var name = ""
     var brand: String?
+    var nutritionUnit = NutritionUnit.per100g
     var calories = 0.0
     var protein = 0.0
     var carbohydrates = 0.0
@@ -23,6 +24,7 @@ class FoodEditorViewModel {
         
         name = food.name
         brand = food.brand
+        nutritionUnit = nutritionUnit
         calories = food.calories
         protein = food.protein
         carbohydrates = food.carbohydrates
@@ -33,6 +35,7 @@ class FoodEditorViewModel {
         Food(
             name: name,
             brand: brand,
+            nutritionUnit: nutritionUnit,
             calories: calories,
             protein: protein,
             carbohydrates: carbohydrates,
@@ -45,6 +48,7 @@ class FoodEditorViewModel {
             id: food.id,
             name: name,
             brand: brand,
+            nutritionUnit: nutritionUnit,
             calories: calories,
             protein: protein,
             carbohydrates: carbohydrates,

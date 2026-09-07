@@ -12,7 +12,7 @@ struct Food: Identifiable {
     var name: String
     var brand: String?
     
-    // Nutritional values per 100g
+    var nutritionUnit: NutritionUnit
     var calories: Double
     var protein: Double
     var carbohydrates: Double
@@ -22,6 +22,7 @@ struct Food: Identifiable {
         id: UUID = UUID(),
         name: String,
         brand: String? = nil,
+        nutritionUnit: NutritionUnit,
         calories: Double,
         protein: Double,
         carbohydrates: Double,
@@ -30,6 +31,7 @@ struct Food: Identifiable {
         self.id = id
         self.name = name
         self.brand = brand
+        self.nutritionUnit = nutritionUnit
         self.calories = calories
         self.protein = protein
         self.carbohydrates = carbohydrates

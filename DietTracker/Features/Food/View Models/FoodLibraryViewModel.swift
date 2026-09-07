@@ -15,6 +15,7 @@ class FoodLibraryViewModel {
         Food(
             name: "Sample Food 1",
             brand: "Costco",
+            nutritionUnit: .per100g,
             calories: 1,
             protein: 2,
             carbohydrates: 3,
@@ -22,6 +23,7 @@ class FoodLibraryViewModel {
         ),
         Food(
             name: "Sample Food 2",
+            nutritionUnit: .per100g,
             calories: 0,
             protein: 0,
             carbohydrates: 0,

@@ -46,6 +46,15 @@ struct FoodEditorView: View {
                     )
                 }
 
+                Section{
+                    Picker("Nutrition Info", selection: $foodEditorVM.nutritionUnit) {
+                        ForEach(NutritionUnit.allCases) { nutritionUnit in
+                            Text(nutritionUnit.rawValue)
+                                .tag(nutritionUnit as NutritionUnit?)
+                        }
+                    }
+                }
+                
                 Section("Calories") {
                     TextField(
                         "",
