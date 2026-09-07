@@ -19,7 +19,7 @@ struct DailyFoodEntriesView: View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(dailyFoodEntriesVM.foodEntries) { foodEntry in
+                    ForEach(dailyFoodEntriesVM.foodEntries(for: Date())) { foodEntry in
                         if let food = foodLibraryVM.foods.first(
                             where: { $0.id == foodEntry.foodID }
                         ) {
@@ -41,7 +41,7 @@ struct DailyFoodEntriesView: View {
                     showPopup = true
                 }
             }
-            .navigationTitle("Food Entries")
+            .navigationTitle("Today")
             .sheet(isPresented: $showPopup) {
                 if let selectedFoodEntry,
                    let food = foodLibraryVM.foods.first(

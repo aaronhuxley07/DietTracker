@@ -11,6 +11,12 @@ import Foundation
 class DailyFoodEntriesViewModel {
     var foodEntries: [FoodEntry] = []
     
+    func foodEntries(for date: Date) -> [FoodEntry] {
+        foodEntries.filter {
+            Calendar.current.isDate($0.date, inSameDayAs: date)
+        }
+    }
+    
     func addFoodEntry(_ foodEntry: FoodEntry) {
         foodEntries.append(foodEntry)
     }

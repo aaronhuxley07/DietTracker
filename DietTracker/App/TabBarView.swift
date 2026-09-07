@@ -13,7 +13,7 @@ struct TabBarView: View {
     
     var body: some View {
         TabView {
-            Tab("Entries", systemImage: "house") {
+            Tab("Today", systemImage: "house") {
                 DailyFoodEntriesView(foodLibraryVM: foodLibraryVM)
             }
             
