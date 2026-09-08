@@ -12,67 +12,124 @@ struct DailyFoodEntriesView: View {
     @Bindable var foodLibraryVM: FoodLibraryViewModel
     @State private var dailyFoodEntriesVM = DailyFoodEntriesViewModel()
 
-    @State private var showPopup = false
+    @State private var showEntrySheet = false
     @State private var selectedFoodEntry: FoodEntry?
 
     var body: some View {
         NavigationStack {
-            VStack {
-                List {
-                    ForEach(MealType.allCases, id: \.self) { mealType in
-                        Section(mealType.rawValue.capitalized) {
-
-                            let entries = dailyFoodEntriesVM.foodEntries(for: Date(), mealType: mealType)
-                            ForEach(entries, id: \.id) { foodEntry in
-                                Button(foodEntry.food.name) {
-                                    selectedFoodEntry = foodEntry
-                                    showPopup = true
-                                }
-                            }
-                            .onDelete { indexSet in
-                                let entriesToDelete = indexSet.map { entries[$0] }
-                                for entry in entriesToDelete {
-                                    dailyFoodEntriesVM.deleteFoodEntry(entry)
-                                }
-                            }
-                        }
-                    }
-                }
-                Button("Add New Food Entry") {
-                    selectedFoodEntry = nil
-                    showPopup = true
-                }
+            List {
+                mealSections
             }
+            .listStyle(.plain)
             .navigationTitle("Today")
-            .sheet(isPresented: $showPopup) {
-                if let selectedFoodEntry {
-                    FoodEntryView(
-                        food: selectedFoodEntry.food,
-                        existingFoodEntry: selectedFoodEntry,
-                        onSave: { updatedFoodEntry in
-                            dailyFoodEntriesVM.updateFoodEntry(updatedFoodEntry)
-                            closeEditor()
-                        },
-                        onDelete: { foodEntry in
-                            dailyFoodEntriesVM.deleteFoodEntry(foodEntry)
-                            closeEditor()
-                        }
-                    )
-                } else {
-                    FoodPickerView(
-                        foodLibraryVM: foodLibraryVM,
-                        onSave: { foodEntry in
-                            dailyFoodEntriesVM.addFoodEntry(foodEntry)
-                            closeEditor()
-                        }
-                    )
-                }
+            .safeAreaInset(edge: .bottom) {
+                addEntryButton
+            }
+            .sheet(isPresented: $showEntrySheet) {
+                entrySheet
             }
         }
     }
+}
+
+// MARK: - Meal Sections
+
+extension DailyFoodEntriesView {
+
+    @ViewBuilder
+    private var mealSections: some View {
+        ForEach(MealType.allCases) { mealType in
+            Section {
+                let entries = dailyFoodEntriesVM.foodEntries(
+                    for: Date(),
+                    mealType: mealType
+                )
+
+                ForEach(entries) { foodEntry in
+                    Button {
+                        selectedFoodEntry = foodEntry
+                        showEntrySheet = true
+                    } label: {
+                        VStack(alignment: .leading){
+                            HStack {
+                                Text(foodEntry.food.name)
+                                Spacer()
+                                Text("X kcal")
+                            }
+                            Text("2 x 100g (200g) | Random Brand")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        dailyFoodEntriesVM.deleteFoodEntry(entries[index])
+                    }
+                }
+            } header: {
+                HStack {
+                    Text(mealType.rawValue.capitalized)
+                    Spacer()
+                    Text("X kcal")
+                }
+                .font(.title2)
+            }
+        }
+    }
+}
+
+// MARK: - Add Entry
+
+extension DailyFoodEntriesView {
+
+    private var addEntryButton: some View {
+        Button("Add New Food Entry") {
+            selectedFoodEntry = nil
+            showEntrySheet = true
+        }
+        .buttonStyle(.borderedProminent)
+        .padding()
+    }
+}
+
+// MARK: - Entry Sheet
+
+extension DailyFoodEntriesView {
+
+    @ViewBuilder
+    private var entrySheet: some View {
+        if let selectedFoodEntry {
+            FoodEntryView(
+                food: selectedFoodEntry.food,
+                existingFoodEntry: selectedFoodEntry,
+                onSave: { updatedFoodEntry in
+                    dailyFoodEntriesVM.updateFoodEntry(updatedFoodEntry)
+                    closeEditor()
+                },
+                onDelete: { foodEntry in
+                    dailyFoodEntriesVM.deleteFoodEntry(foodEntry)
+                    closeEditor()
+                }
+            )
+        } else {
+            FoodPickerView(
+                foodLibraryVM: foodLibraryVM,
+                onSave: { foodEntry in
+                    dailyFoodEntriesVM.addFoodEntry(foodEntry)
+                    closeEditor()
+                }
+            )
+        }
+    }
+}
+
+// MARK: - Actions
+
+extension DailyFoodEntriesView {
 
     private func closeEditor() {
-        showPopup = false
+        showEntrySheet = false
         selectedFoodEntry = nil
     }
 }
