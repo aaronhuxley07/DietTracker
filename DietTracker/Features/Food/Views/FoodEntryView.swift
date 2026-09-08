@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FoodEntryView: View {
 
-    let food: Food
+    var food: Food
     let existingFoodEntry: FoodEntry?
 
     var onSave: (FoodEntry) -> Void
@@ -127,4 +127,53 @@ extension FoodEntryView {
             Text(String(food.fat))
         }
     }
+}
+
+#Preview("Add Food Entry") {
+    FoodEntryView(
+        food: Food(
+            name: "Chicken Breast",
+            brand: "Example Brand",
+            nutritionUnit: .per100g,
+            calories: 165,
+            protein: 31,
+            carbohydrates: 0,
+            fat: 3.6
+        ),
+        onSave: { foodEntry in
+            print(foodEntry)
+        },
+        onDelete: { foodEntry in
+            print(foodEntry)
+        }
+    )
+}
+
+#Preview("Edit Food Entry") {
+    let food = Food(
+        name: "Chicken Breast",
+        brand: "Example Brand",
+        nutritionUnit: .per100g,
+        calories: 165,
+        protein: 31,
+        carbohydrates: 0,
+        fat: 3.6
+    )
+
+    let foodEntry = FoodEntry(
+        food: food,
+        amount: 200,
+        mealType: .lunch
+    )
+
+    FoodEntryView(
+        food: food,
+        existingFoodEntry: foodEntry,
+        onSave: { foodEntry in
+            print(foodEntry)
+        },
+        onDelete: { foodEntry in
+            print(foodEntry)
+        }
+    )
 }

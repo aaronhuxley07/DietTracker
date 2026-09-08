@@ -111,3 +111,9 @@ struct FoodEditorView: View {
         }
     }
 }
+
+#Preview {
+    FoodEditorView { food in
+        print(food)
+    }
+}

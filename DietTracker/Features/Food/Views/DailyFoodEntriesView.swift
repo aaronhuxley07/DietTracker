@@ -24,13 +24,9 @@ struct DailyFoodEntriesView: View {
 
                             let entries = dailyFoodEntriesVM.foodEntries(for: Date(), mealType: mealType)
                             ForEach(entries, id: \.id) { foodEntry in
-                                if let food = foodLibraryVM.foods.first(
-                                    where: { $0.id == foodEntry.foodID }
-                                ) {
-                                    Button(food.name) {
-                                        selectedFoodEntry = foodEntry
-                                        showPopup = true
-                                    }
+                                Button(foodEntry.food.name) {
+                                    selectedFoodEntry = foodEntry
+                                    showPopup = true
                                 }
                             }
                             .onDelete { indexSet in
@@ -49,12 +45,9 @@ struct DailyFoodEntriesView: View {
             }
             .navigationTitle("Today")
             .sheet(isPresented: $showPopup) {
-                if let selectedFoodEntry,
-                   let food = foodLibraryVM.foods.first(
-                       where: { $0.id == selectedFoodEntry.foodID }
-                   ) {
+                if let selectedFoodEntry {
                     FoodEntryView(
-                        food: food,
+                        food: selectedFoodEntry.food,
                         existingFoodEntry: selectedFoodEntry,
                         onSave: { updatedFoodEntry in
                             dailyFoodEntriesVM.updateFoodEntry(updatedFoodEntry)
@@ -84,3 +77,8 @@ struct DailyFoodEntriesView: View {
     }
 }
 
+#Preview {
+    DailyFoodEntriesView(
+        foodLibraryVM: FoodLibraryViewModel()
+    )
+}

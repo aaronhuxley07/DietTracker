@@ -32,7 +32,7 @@ class FoodEntryViewModel {
     
     func createFoodEntry() -> FoodEntry {
         FoodEntry(
-            foodID: food.id,
+            food: food,
             amount: amount,
             date: date,
             mealType: mealType ?? .breakfast
@@ -42,7 +42,7 @@ class FoodEntryViewModel {
     func editFoodEntry(_ foodEntry: FoodEntry) -> FoodEntry {
         FoodEntry(
             id: foodEntry.id,
-            foodID: foodEntry.foodID,
+            food: foodEntry.food,
             amount: amount,
             date: date,
             mealType: mealType ?? .breakfast

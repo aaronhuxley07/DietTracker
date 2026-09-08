@@ -9,20 +9,21 @@ import Foundation
 
 struct FoodEntry: Identifiable {
     let id: UUID
-    let foodID: UUID
+    var food: Food
+    
     var amount: Double // Amount consumed in grams
     var date: Date
     var mealType: MealType
     
     init(
         id: UUID = UUID(),
-        foodID: UUID,
+        food: Food,
         amount: Double,
         date: Date = Date(),
         mealType: MealType
     ) {
         self.id = id
-        self.foodID = foodID
+        self.food = food
         self.amount = amount
         self.date = date
         self.mealType = mealType

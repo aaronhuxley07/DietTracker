@@ -55,3 +55,12 @@ struct FoodPickerView: View {
         }
     }
 }
+
+#Preview {
+    FoodPickerView(
+        foodLibraryVM: FoodLibraryViewModel(),
+        onSave: { foodEntry in
+            print(foodEntry)
+        }
+    )
+}

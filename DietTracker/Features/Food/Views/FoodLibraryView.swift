@@ -58,3 +58,9 @@ struct FoodLibraryView: View {
         }
     }
 }
+
+#Preview {
+    FoodLibraryView(
+        foodLibraryVM: FoodLibraryViewModel()
+    )
+}
