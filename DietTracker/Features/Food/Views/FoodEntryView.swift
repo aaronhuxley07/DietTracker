@@ -38,7 +38,7 @@ struct FoodEntryView: View {
 
     var body: some View {
         Form {
-            foodInformation
+            calculatedNutrition
             entryInformation
         }
         .navigationTitle(
@@ -73,61 +73,39 @@ struct FoodEntryView: View {
 
 extension FoodEntryView {
 
-    private var foodInformation: some View {
-        Section {
-            VStack(spacing: 15) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(food.name)
-
-                        if let brand = food.brand {
-                            Text(brand)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-
-                    Spacer()
-                }
-
-                HStack {
-                    nutritionValue(
-                        value: food.calories,
-                        label: "Calories"
-                    )
-
-                    Spacer()
-
-                    nutritionValue(
-                        value: food.protein,
-                        label: "Protein"
-                    )
-
-                    Spacer()
-
-                    nutritionValue(
-                        value: food.carbohydrates,
-                        label: "Carbs"
-                    )
-
-                    Spacer()
-
-                    nutritionValue(
-                        value: food.fat,
-                        label: "Fat"
-                    )
-                }
+    private var calculatedNutrition: some View {
+        Section("Nutrition") {
+            HStack {
+                nutritionValue(
+                    valueText: String(format: "%.0f kcal", foodEntryVM.calculatedCalories),
+                    label: "Calories"
+                )
+                Spacer()
+                nutritionValue(
+                    valueText: String(format: "%.1f g", foodEntryVM.calculatedProtein),
+                    label: "Protein"
+                )
+                Spacer()
+                nutritionValue(
+                    valueText: String(format: "%.1f g", foodEntryVM.calculatedCarbohydrates),
+                    label: "Carbs"
+                )
+                Spacer()
+                nutritionValue(
+                    valueText: String(format: "%.1f g", foodEntryVM.calculatedFat),
+                    label: "Fat"
+                )
             }
         }
     }
-
+    
     private func nutritionValue(
-        value: Double,
+        valueText: String,
         label: String
     ) -> some View {
         VStack {
-            Text(String(value))
-
+            Text(valueText)
+                .font(.headline)
             Text(label)
                 .font(.caption)
                 .foregroundStyle(.secondary)

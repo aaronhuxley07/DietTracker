@@ -25,6 +25,16 @@ enum NutritionUnit: String, CaseIterable, Identifiable {
         }
     }
 
+    var referenceAmount: Double {
+        switch self {
+        case .per100g, .per100ml:
+            100
+
+        case .per1g, .per1ml:
+            1
+        }
+    }
+
     var servingSize: String {
         switch self {
         case .per100g:

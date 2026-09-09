@@ -10,29 +10,59 @@ import Observation
 
 @Observable
 class FoodEntryViewModel {
-    
+
     let food: Food
     var nutritionUnit: NutritionUnit
     var amount: Double
     var date: Date
     var mealType: MealType?
-    
+
     init(food: Food, existingFoodEntry: FoodEntry? = nil) {
         self.food = food
-        
+
         if let entry = existingFoodEntry {
             nutritionUnit = entry.nutritionUnit
             amount = entry.amount
             date = entry.date
             mealType = entry.mealType
         } else {
-            nutritionUnit = .per100g
-            amount = 0
+            nutritionUnit = food.nutritionUnit
+            amount = 1
             date = Date()
             mealType = nil
         }
     }
-    
+
+    var calculatedCalories: Double {
+        calculate(food.calories)
+    }
+
+    var calculatedProtein: Double {
+        calculate(food.protein)
+    }
+
+    var calculatedCarbohydrates: Double {
+        calculate(food.carbohydrates)
+    }
+
+    var calculatedFat: Double {
+        calculate(food.fat)
+    }
+
+    private func calculate(_ nutritionValue: Double) -> Double {
+        guard nutritionUnit.measurementType == food.nutritionUnit.measurementType else {
+            return 0
+        }
+
+        let foodReferenceAmount = food.nutritionUnit.referenceAmount
+        let selectedReferenceAmount = nutritionUnit.referenceAmount
+
+        let nutritionPerBaseUnit =
+            nutritionValue / foodReferenceAmount
+
+        return nutritionPerBaseUnit * selectedReferenceAmount * amount
+    }
+
     func createFoodEntry() -> FoodEntry {
         FoodEntry(
             food: food,
@@ -42,7 +72,7 @@ class FoodEntryViewModel {
             mealType: mealType ?? .breakfast
         )
     }
-    
+
     func editFoodEntry(_ foodEntry: FoodEntry) -> FoodEntry {
         FoodEntry(
             id: foodEntry.id,
