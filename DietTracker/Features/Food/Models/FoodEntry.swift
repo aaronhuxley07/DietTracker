@@ -11,6 +11,7 @@ struct FoodEntry: Identifiable {
     let id: UUID
     var food: Food
     
+    var nutritionUnit: NutritionUnit
     var amount: Double // Amount consumed in grams
     var date: Date
     var mealType: MealType
@@ -18,12 +19,14 @@ struct FoodEntry: Identifiable {
     init(
         id: UUID = UUID(),
         food: Food,
+        nutritionUnit: NutritionUnit,
         amount: Double,
         date: Date = Date(),
         mealType: MealType
     ) {
         self.id = id
         self.food = food
+        self.nutritionUnit = nutritionUnit
         self.amount = amount
         self.date = date
         self.mealType = mealType

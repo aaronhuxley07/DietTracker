@@ -141,14 +141,20 @@ extension FoodEntryView {
 
     private var entryInformation: some View {
         Section {
-            HStack {
-                Text("Serving Size")
-
-                Spacer()
-
-                Text(food.nutritionUnit.servingSize)
+            Picker(
+                "Serving Size",
+                selection: $foodEntryVM.nutritionUnit
+            ) {
+                ForEach(
+                    NutritionUnit.allCases.filter {
+                        $0.measurementType == food.nutritionUnit.measurementType
+                    }
+                ) { nutritionUnit in
+                    Text(nutritionUnit.servingSize)
+                        .tag(nutritionUnit)
+                }
             }
-
+            
             HStack {
                 Text("Servings")
 
@@ -235,6 +241,7 @@ extension FoodEntryView {
 
     let foodEntry = FoodEntry(
         food: food,
+        nutritionUnit: .per100g,
         amount: 200,
         mealType: .lunch
     )

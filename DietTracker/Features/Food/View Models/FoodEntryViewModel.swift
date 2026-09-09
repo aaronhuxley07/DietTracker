@@ -12,6 +12,7 @@ import Observation
 class FoodEntryViewModel {
     
     let food: Food
+    var nutritionUnit: NutritionUnit
     var amount: Double
     var date: Date
     var mealType: MealType?
@@ -20,10 +21,12 @@ class FoodEntryViewModel {
         self.food = food
         
         if let entry = existingFoodEntry {
+            nutritionUnit = entry.nutritionUnit
             amount = entry.amount
             date = entry.date
             mealType = entry.mealType
         } else {
+            nutritionUnit = .per100g
             amount = 0
             date = Date()
             mealType = nil
@@ -33,6 +36,7 @@ class FoodEntryViewModel {
     func createFoodEntry() -> FoodEntry {
         FoodEntry(
             food: food,
+            nutritionUnit: nutritionUnit,
             amount: amount,
             date: date,
             mealType: mealType ?? .breakfast
@@ -43,6 +47,7 @@ class FoodEntryViewModel {
         FoodEntry(
             id: foodEntry.id,
             food: foodEntry.food,
+            nutritionUnit: nutritionUnit,
             amount: amount,
             date: date,
             mealType: mealType ?? .breakfast
