@@ -12,7 +12,7 @@ struct FoodEntry: Identifiable {
     var food: Food
     
     var nutritionUnit: NutritionUnit
-    var amount: Double // Amount consumed in grams
+    var amount: Double
     var date: Date
     var mealType: MealType
     
@@ -30,5 +30,16 @@ struct FoodEntry: Identifiable {
         self.amount = amount
         self.date = date
         self.mealType = mealType
+    }
+}
+
+extension FoodEntry {
+    
+    var nutrition: Nutrition {
+        NutritionCalculator.calculate(
+            food: food,
+            entryUnit: nutritionUnit,
+            amount: amount
+        )
     }
 }

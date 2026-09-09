@@ -16,6 +16,14 @@ class FoodEntryViewModel {
     var amount: Double
     var date: Date
     var mealType: MealType?
+    
+    var nutrition: Nutrition {
+        NutritionCalculator.calculate(
+            food: food,
+            entryUnit: nutritionUnit,
+            amount: amount
+        )
+    }
 
     init(food: Food, existingFoodEntry: FoodEntry? = nil) {
         self.food = food
@@ -31,36 +39,6 @@ class FoodEntryViewModel {
             date = Date()
             mealType = nil
         }
-    }
-
-    var calculatedCalories: Double {
-        calculate(food.calories)
-    }
-
-    var calculatedProtein: Double {
-        calculate(food.protein)
-    }
-
-    var calculatedCarbohydrates: Double {
-        calculate(food.carbohydrates)
-    }
-
-    var calculatedFat: Double {
-        calculate(food.fat)
-    }
-
-    private func calculate(_ nutritionValue: Double) -> Double {
-        guard nutritionUnit.measurementType == food.nutritionUnit.measurementType else {
-            return 0
-        }
-
-        let foodReferenceAmount = food.nutritionUnit.referenceAmount
-        let selectedReferenceAmount = nutritionUnit.referenceAmount
-
-        let nutritionPerBaseUnit =
-            nutritionValue / foodReferenceAmount
-
-        return nutritionPerBaseUnit * selectedReferenceAmount * amount
     }
 
     func createFoodEntry() -> FoodEntry {

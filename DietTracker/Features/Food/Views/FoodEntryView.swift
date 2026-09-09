@@ -98,22 +98,22 @@ extension FoodEntryView {
         Section("Nutrition") {
             HStack {
                 nutritionValue(
-                    valueText: String(format: "%.0f kcal", foodEntryVM.calculatedCalories),
+                    valueText: String(format: "%.0f kcal", foodEntryVM.nutrition.calories),
                     label: "Calories"
                 )
                 Spacer()
                 nutritionValue(
-                    valueText: String(format: "%.1f g", foodEntryVM.calculatedProtein),
+                    valueText: String(format: "%.1f g", foodEntryVM.nutrition.protein),
                     label: "Protein"
                 )
                 Spacer()
                 nutritionValue(
-                    valueText: String(format: "%.1f g", foodEntryVM.calculatedCarbohydrates),
+                    valueText: String(format: "%.1f g", foodEntryVM.nutrition.carbohydrates),
                     label: "Carbs"
                 )
                 Spacer()
                 nutritionValue(
-                    valueText: String(format: "%.1f g", foodEntryVM.calculatedFat),
+                    valueText: String(format: "%.1f g", foodEntryVM.nutrition.fat),
                     label: "Fat"
                 )
             }
