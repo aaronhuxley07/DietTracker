@@ -47,9 +47,13 @@ enum NutritionUnit: String, CaseIterable, Identifiable {
             "1ml"
         }
     }
-}
-
-enum MeasurementType {
-    case grams
-    case millilitres
+    
+    var unitSymbol: String {
+        switch measurementType {
+        case .grams:
+            "g"
+        case .millilitres:
+            "ml"
+        }
+    }
 }

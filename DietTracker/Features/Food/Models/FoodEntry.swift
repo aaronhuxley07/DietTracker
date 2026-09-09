@@ -42,4 +42,10 @@ extension FoodEntry {
             amount: amount
         )
     }
+    
+    var totalAmount: String {
+        let amount = self.amount * nutritionUnit.referenceAmount
+        
+        return String(format: "%.0f%@", amount, nutritionUnit.unitSymbol)
+    }
 }

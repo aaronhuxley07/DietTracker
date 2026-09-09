@@ -54,9 +54,10 @@ extension DailyFoodEntriesView {
                             HStack {
                                 Text(foodEntry.food.name)
                                 Spacer()
-                                Text("X kcal")
+                                Text(String(format: "%.0f cal", foodEntry.nutrition.calories))
+                                
                             }
-                            Text("2 x 100g (200g) | Random Brand")
+                            Text("\(foodEntry.amount, specifier: "%.0f") x \(foodEntry.nutritionUnit.servingSize) (\(foodEntry.totalAmount) | Random Brand")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
