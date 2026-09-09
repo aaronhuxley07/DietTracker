@@ -38,6 +38,7 @@ struct FoodEntryView: View {
 
     var body: some View {
         Form {
+            foodInformation
             calculatedNutrition
             entryInformation
         }
@@ -49,7 +50,7 @@ struct FoodEntryView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 if let existingFoodEntry {
-                    Button("Log") {
+                    Button("Save") {
                         saveChanges(existingFoodEntry)
                     }
 
@@ -70,6 +71,26 @@ struct FoodEntryView: View {
 }
 
 // MARK: - Food Information
+
+extension FoodEntryView {
+    private var foodInformation: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(food.name)
+                    .font(.headline)
+                
+                if let brand = food.brand {
+                    Text(brand)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+}
+
+
+// MARK: - Calculated Nutrition
 
 extension FoodEntryView {
 

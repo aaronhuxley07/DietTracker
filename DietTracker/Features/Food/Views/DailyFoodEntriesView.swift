@@ -100,18 +100,20 @@ extension DailyFoodEntriesView {
     @ViewBuilder
     private var entrySheet: some View {
         if let selectedFoodEntry {
-            FoodEntryView(
-                food: selectedFoodEntry.food,
-                existingFoodEntry: selectedFoodEntry,
-                onSave: { updatedFoodEntry in
-                    dailyFoodEntriesVM.updateFoodEntry(updatedFoodEntry)
-                    closeEditor()
-                },
-                onDelete: { foodEntry in
-                    dailyFoodEntriesVM.deleteFoodEntry(foodEntry)
-                    closeEditor()
-                }
-            )
+            NavigationView {
+                FoodEntryView(
+                    food: selectedFoodEntry.food,
+                    existingFoodEntry: selectedFoodEntry,
+                    onSave: { updatedFoodEntry in
+                        dailyFoodEntriesVM.updateFoodEntry(updatedFoodEntry)
+                        closeEditor()
+                    },
+                    onDelete: { foodEntry in
+                        dailyFoodEntriesVM.deleteFoodEntry(foodEntry)
+                        closeEditor()
+                    }
+                )
+            }
         } else {
             FoodPickerView(
                 foodLibraryVM: foodLibraryVM,
