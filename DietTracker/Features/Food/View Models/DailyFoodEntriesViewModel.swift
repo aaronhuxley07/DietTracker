@@ -17,6 +17,10 @@ class DailyFoodEntriesViewModel {
         }
     }
     
+    func foodEntries(for date: Date) -> [FoodEntry] {
+        foodEntries.filter { Calendar.current.isDate($0.date, inSameDayAs: date) }
+    }
+    
     func addFoodEntry(_ foodEntry: FoodEntry) {
         foodEntries.append(foodEntry)
     }
@@ -30,4 +34,11 @@ class DailyFoodEntriesViewModel {
     func deleteFoodEntry(_ foodEntry: FoodEntry) {
         foodEntries.removeAll { $0.id == foodEntry.id }
     }
+    
+    func totalNutrition(for date: Date) -> Nutrition {
+        let entries = foodEntries(for: date)
+        
+        return NutritionCalculator.totalNutrition(for: entries)
+    }
 }
+

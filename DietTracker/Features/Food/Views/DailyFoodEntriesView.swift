@@ -57,7 +57,7 @@ extension DailyFoodEntriesView {
                                 Text(String(format: "%.0f cal", foodEntry.nutrition.calories))
                                 
                             }
-                            Text("\(foodEntry.amount, specifier: "%.0f") x \(foodEntry.nutritionUnit.servingSize) (\(foodEntry.totalAmount) | Random Brand")
+                            Text("\(foodEntry.amount, specifier: "%.0f") x \(foodEntry.nutritionUnit.servingSize) (\(foodEntry.totalAmount)) | Random Brand")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
@@ -72,7 +72,7 @@ extension DailyFoodEntriesView {
                 HStack {
                     Text(mealType.rawValue.capitalized)
                     Spacer()
-                    Text("X kcal")
+                    Text(String(format: "%.0f cal", dailyFoodEntriesVM.totalNutrition(for: Date()).calories))
                 }
                 .font(.title2)
             }

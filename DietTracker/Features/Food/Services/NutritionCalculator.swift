@@ -44,4 +44,22 @@ struct NutritionCalculator {
             / foodUnit.referenceAmount
         ) * amount
     }
+    
+    static func totalNutrition(for entries: [FoodEntry]) -> Nutrition {
+        entries.reduce(
+            Nutrition(
+                calories: 0,
+                protein: 0,
+                carbohydrates: 0,
+                fat: 0
+            )
+        ) { total, entry in
+            Nutrition(
+                calories: total.calories + entry.nutrition.calories,
+                protein: total.protein + entry.nutrition.protein,
+                carbohydrates: total.carbohydrates + entry.nutrition.carbohydrates,
+                fat: total.fat + entry.nutrition.fat
+            )
+        }
+    }
 }
