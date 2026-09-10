@@ -18,6 +18,8 @@ struct DailyFoodEntriesView: View {
     var body: some View {
         NavigationStack {
             List {
+                dailyTotals
+                    .listRowSeparator(.hidden)
                 mealSections
             }
             .listStyle(.plain)
@@ -29,6 +31,38 @@ struct DailyFoodEntriesView: View {
                 entrySheet
             }
         }
+    }
+}
+
+// MARK: - Daily Totals
+
+extension DailyFoodEntriesView {
+
+    private var dailyTotals: some View {
+        let nutrition = dailyFoodEntriesVM.totalNutrition(for: Date())
+
+        return HStack {
+            VStack {
+                Text("\(nutrition.calories, specifier: "%.0f") kcal")
+                Text("Calories")
+            }
+            Spacer()
+            VStack {
+                Text("\(nutrition.protein, specifier: "%.1f") g")
+                Text("Protein")
+            }
+            Spacer()
+            VStack {
+                Text("\(nutrition.carbohydrates, specifier: "%.1f") g")
+                Text("Carbs")
+            }
+            Spacer()
+            VStack {
+                Text("\(nutrition.fat, specifier: "%.1f") g")
+                Text("Fat")
+            }
+        }
+        .padding(.horizontal)
     }
 }
 
