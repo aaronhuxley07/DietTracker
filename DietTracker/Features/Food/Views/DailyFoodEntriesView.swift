@@ -15,6 +15,8 @@ struct DailyFoodEntriesView: View {
     @State private var showEntrySheet = false
     @State private var selectedFoodEntry: FoodEntry?
 
+    @State private var selectedDate = Date()
+    
     var body: some View {
         NavigationStack {
             List {
@@ -23,12 +25,29 @@ struct DailyFoodEntriesView: View {
                 mealSections
             }
             .listStyle(.plain)
-            .navigationTitle("Today")
+            .navigationTitle(selectedDate.formatted(date: .abbreviated, time: .omitted))
             .safeAreaInset(edge: .bottom) {
                 addEntryButton
             }
             .sheet(isPresented: $showEntrySheet) {
                 entrySheet
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        previousDay()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        nextDay()
+                    } label: {
+                        Image(systemName: "chevron.right")
+                    }
+                }
             }
         }
     }
@@ -39,7 +58,7 @@ struct DailyFoodEntriesView: View {
 extension DailyFoodEntriesView {
 
     private var dailyTotals: some View {
-        let nutrition = dailyFoodEntriesVM.totalNutrition(for: Date())
+        let nutrition = dailyFoodEntriesVM.totalNutrition(for: selectedDate)
 
         return HStack {
             VStack {
@@ -74,11 +93,8 @@ extension DailyFoodEntriesView {
     private var mealSections: some View {
         ForEach(MealType.allCases) { mealType in
             Section {
-                let entries = dailyFoodEntriesVM.foodEntries(
-                    for: Date(),
-                    mealType: mealType
-                )
-
+                let entries = dailyFoodEntriesVM.foodEntries(for: selectedDate, mealType: mealType)
+                
                 ForEach(entries) { foodEntry in
                     Button {
                         selectedFoodEntry = foodEntry
@@ -168,6 +184,22 @@ extension DailyFoodEntriesView {
     private func closeEditor() {
         showEntrySheet = false
         selectedFoodEntry = nil
+    }
+    
+    private func previousDay() {
+        selectedDate = Calendar.current.date(
+            byAdding: .day,
+            value: -1,
+            to: selectedDate
+        ) ?? selectedDate
+    }
+
+    private func nextDay() {
+        selectedDate = Calendar.current.date(
+            byAdding: .day,
+            value: 1,
+            to: selectedDate
+        ) ?? selectedDate
     }
 }
 
